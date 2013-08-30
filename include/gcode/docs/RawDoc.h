@@ -20,9 +20,15 @@
 #include <gcode/commands/G0.h>
 #include <gcode/commands/G0Sequence.h>
 #include <gcode/commands/G1.h>
+#include <gcode/commands/G1_M4.h>
 #include <gcode/commands/G1_M14M4.h>
 #include <gcode/commands/G1Sequence.h>
+#include <gcode/commands/G1Sequence_M5.h>
 #include <gcode/commands/G1Sequence_M5M15.h>
+
+#include <gcode/commands/G2IJ.h>
+#include <gcode/commands/G3IJ.h>
+
 #include <gcode/commands/G4.h>
 #include <gcode/commands/G5_1.h>
 #include <gcode/commands/G5_2_G5_3.h>
@@ -128,6 +134,11 @@ namespace gcode {
             commands.push_back( new G1( position_, enabledComponents_ ) );
         }
         
+        void g1M4( const Vec3_F & position_, const Vec3_B & enabledComponents_ )
+        {
+            commands.push_back( new G1_M4( position_, enabledComponents_ ) );
+        }
+        
         void g1M14M4( const Vec3_F & position_, const Vec3_B & enabledComponents_ )
         {
             commands.push_back( new G1_M14M4( position_, enabledComponents_ ) );
@@ -159,6 +170,30 @@ namespace gcode {
             enabledComponentsVector.push_back( enabledComponents_ );
             
             commands.push_back( new G1Sequence_M5M15( positions_, enabledComponentsVector ) );
+        }
+        
+        void g1M5( const std::vector<Vec3_F> & positions_, const std::vector<Vec3_B> & enabledComponents_ )
+        {
+            commands.push_back( new G1Sequence_M5( positions_, enabledComponents_ ) );
+        }
+        
+        void g1M5( const std::vector<Vec3_F> & positions_, const Vec3_B & enabledComponents_ )
+        {
+            std::vector<Vec3_B> enabledComponentsVector;
+            
+            enabledComponentsVector.push_back( enabledComponents_ );
+            
+            commands.push_back( new G1Sequence_M5( positions_, enabledComponentsVector ) );
+        }
+        
+        void g2IJ( const Vec2_F & center_, const Vec2_F & startPos_, const Vec2_B & enabledComponents_ )
+        {
+            commands.push_back( new G2IJ( center_, startPos_, enabledComponents_ ) );
+        }
+        
+        void g3IJ( const Vec2_F & center_, const Vec2_F & startPos_, const Vec2_B & enabledComponents_ )
+        {
+            commands.push_back( new G3IJ( center_, startPos_, enabledComponents_ ) );
         }
         
         void g4( const float value_ )
